@@ -45,6 +45,14 @@ inputs:
       recursively checkout submodules.
     required: false
     default: false
+  aws-s3-bucket:
+    description: "S3 bucket name"
+  aws-access-key-id: 
+    description: "AWS Access Key"
+  aws-secret-access-key: 
+    description: "AWS Secret Key"
+  aws-region:
+    description: "AWS Region"
 
 runs:
   using: "composite"
@@ -75,7 +83,7 @@ runs:
       id: cache-paths
       shell: bash
 
-    - name: Restore LFS cache
+    - name: Restore S3 LFS cache
       uses: idein/action-s3-cache@master
       id: s3-lfs-cache
       with:
@@ -83,6 +91,10 @@ runs:
           .git/lfs
           ${{ steps.cache-paths.outputs.CACHE_PATHS }}
         key: lfs-${{ hashFiles('.lfs-assets-id') }}-v2
+        aws-s3-bucket: ${{ inputs.aws-s3-bucket }}
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }} 
 
     - name: Git LFS Pull
       run: |
