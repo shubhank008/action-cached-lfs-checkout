@@ -76,7 +76,7 @@ runs:
       shell: bash
 
     - name: Restore LFS cache
-      uses: Idein/action-s3-cache@master
+      uses: idein/action-s3-cache@master
       id: s3-lfs-cache
       with:
         path: |
